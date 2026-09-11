@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ApiLogEntry, Call } from '../types';
+import { safeDate } from '../utils';
 
 interface RequestLogProps {
   logs: ApiLogEntry[];
@@ -134,7 +135,7 @@ export default function RequestLog({ logs, onClear, callsView }: RequestLogProps
                       <span className="text-xs font-mono text-yellow-400">{log.method}</span>
                     </div>
                     <p className="text-xs text-gray-400 mt-1 truncate font-mono">{log.url}</p>
-                    <p className="text-xs text-gray-600 mt-0.5">{log.timestamp.toLocaleTimeString()}</p>
+                    <p className="text-xs text-gray-600 mt-0.5">{safeDate(log.timestamp).toLocaleTimeString()}</p>
                   </button>
                 ))
               )}

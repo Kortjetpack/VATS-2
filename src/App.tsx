@@ -1,6 +1,18 @@
 import { useState, useCallback } from 'react';
 import { AppConfig, ApiLogEntry, Call } from './types';
-import { generateUUID, formatDateTime, buildCallRequest, buildCallUpdateRequest, buildEventRequest, createApiLogEntry, getAuthHeaders, generateExternalId } from './utils';
+import { generateUUID, formatDateTime, buildCallRequest, buildCallUpdateRequest, buildEventRequest, createApiLogEntry, getAuthHeaders, generateExternalId, safeDate } from './utils';
+
+function parseStoredLogs(json: string): ApiLogEntry[] {
+  try {
+    const parsed = JSON.parse(json) as ApiLogEntry[];
+    return parsed.map(entry => ({
+      ...entry,
+      timestamp: safeDate(entry.timestamp),
+    }));
+  } catch {
+    return [];
+  }
+}
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import ApiTester from './components/ApiTester';
@@ -24,7 +36,7 @@ export default function App() {
   });
   const [logs, setLogs] = useState<ApiLogEntry[]>(() => {
     const saved = localStorage.getItem('phoneapi_logs');
-    return saved ? JSON.parse(saved) : [];
+    return saved ? parseStoredLogs(saved) : [];
   });
   const [calls, setCalls] = useState<Call[]>(() => {
     const saved = localStorage.getItem('phoneapi_calls');

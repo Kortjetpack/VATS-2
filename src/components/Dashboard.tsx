@@ -1,4 +1,5 @@
 import { AppConfig, ApiLogEntry, Call } from '../types';
+import { safeDate } from '../utils';
 
 interface DashboardProps {
   calls: Call[];
@@ -112,7 +113,7 @@ export default function Dashboard({ calls, logs, config }: DashboardProps) {
                 <span className="text-xs font-mono text-yellow-400 w-12">{log.method}</span>
                 <span className="text-xs text-gray-300 truncate flex-1 font-mono">{log.url}</span>
                 <span className="text-xs text-gray-500">
-                  {log.timestamp.toLocaleTimeString()}
+                  {safeDate(log.timestamp).toLocaleTimeString()}
                 </span>
               </div>
             ))}
